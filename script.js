@@ -40,11 +40,11 @@ function increment(id) {
 
 function incrementWater() {
     const el = document.getElementById('water');
-    let [percent, details] = el.textContent.split(' ');
-    let liters = parseFloat(details.match(/[\d.]+/)[0]);
+    let details = el.textContent.split(' ');
+    let liters = parseFloat(details[3]);
     if (liters < 3.8) {
         liters += 0.25;
-        percent = Math.round((liters / 3.8) * 100);
+        const percent = Math.round((liters / 3.8) * 100);
         const newValue = `${percent}% (i alt ${liters.toFixed(1)} liter)`;
         el.textContent = newValue;
         saveProgress('water', newValue);
