@@ -18,6 +18,11 @@ function loadProgress() {
             el.textContent = value;
         }
     });
+
+    const focusStatus = localStorage.getItem('focusStatus');
+    if (focusStatus === 'running') {
+        startFocusTimer();
+    }
 }
 
 function saveProgress(id, value) {
@@ -70,24 +75,41 @@ function setOfferSent() {
 }
 
 let focusInterval;
+let focusTime = 0;
 
-function toggleFocus() {
+function startFocusTimer() {
     const el = document.getElementById('focus');
     const dot = document.getElementById('focus-dot');
-    let [current, total] = el.textContent.split('/').map(s => s.split(' ')[0]).map(Number);
-    if (!dot.classList.contains('blink')) {
-        dot.classList.add('blink');
-        focusInterval = setInterval(() => {
-            if (current < total) {
-                current++;
-                const newValue = `${current}/120 min.`;
-                el.textContent = newValue;
-                saveProgress('focus', newValue);
-            }
-        }, 60000);
+
+    focusTime = parseInt(localStorage.getItem('focusTime')) || 0;
+    dot.classList.add('blink');
+    focusInterval = setInterval(() => {
+        focusTime++;
+        if (focusTime <= 120) {
+            const newValue = `${focusTime}/120 min.`;
+            el.textContent = newValue;
+            saveProgress('focus', newValue);
+            saveProgress('focusTime', focusTime);
+        } else {
+            clearInterval(focusInterval);
+        }
+    }, 60000);
+
+    localStorage.setItem('focusStatus', 'running');
+}
+
+function stopFocusTimer() {
+    clearInterval(focusInterval);
+    document.getElementById('focus-dot').classList.remove('blink');
+    localStorage.setItem('focusStatus', 'stopped');
+}
+
+function toggleFocus() {
+    const dot = document.getElementById('focus-dot');
+    if (dot.classList.contains('blink')) {
+        stopFocusTimer();
     } else {
-        clearInterval(focusInterval);
-        dot.classList.remove('blink');
+        startFocusTimer();
     }
 }
 
@@ -107,4 +129,6 @@ function createNewDay() {
             el.textContent = '0';
         }
     });
+    focusTime = 0;
+    localStorage.setItem('focusTime', '0');
 }
