@@ -9,10 +9,6 @@ body {
     margin: 0;
 }
 
-#dashboard-header {
-    font-size: 35px; /* Adjust font size */
-}
-
 #dashboard {
     width: 80%;
 }
