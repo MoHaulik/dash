@@ -26,9 +26,9 @@ function saveProgress(id, value) {
 
 function increment(id) {
     const el = document.getElementById(id);
-    let current = parseInt(el.textContent);
+    let current = parseInt(el.textContent.split('/')[0]);
     current++;
-    const newValue = current;
+    const newValue = `${current}/${el.textContent.split('/')[1]}`;
     el.textContent = newValue;
     saveProgress(id, newValue);
 }
