@@ -27,7 +27,7 @@ body {
     margin-left: 10px;
 }
 
-.blink {
+#focus-dot.blink {
     animation: blink-animation 1s steps(5, start) infinite;
 }
 
