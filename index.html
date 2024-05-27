@@ -20,9 +20,36 @@
             <span class="title" onclick="increment('training')">Træning</span>
             <span class="value" id="training">0/1</span>
         </div>
-        <!-- Flere emner her -->
         <div class="item">
-            <span class="title" onclick="toggleFocus()">Fokus</span>
+            <span class="title" onclick="incrementMinutes('mindfulness', 2, 45)">Mindfulness</span>
+            <span class="value" id="mindfulness">0/45 min</span>
+        </div>
+        <div class="item">
+            <span class="title" onclick="increment('talkedTo')">Talt til</span>
+            <span class="value" id="talkedTo">0</span>
+        </div>
+        <div class="item">
+            <span class="title" onclick="increment('messagesSent')">Beskeder sent</span>
+            <span class="value" id="messagesSent">0</span>
+        </div>
+        <div class="item">
+            <span class="title" onclick="setOfferSent()">Tilbud sent for</span>
+            <span class="value" id="offerSent">0 kr.</span>
+        </div>
+        <div class="item">
+            <span class="title" onclick="increment('midwifeVRSales')">MidwifeVR salg</span>
+            <span class="value" id="midwifeVRSales">0</span>
+        </div>
+        <div class="item">
+            <span class="title" onclick="increment('midwifeVRPosts')">MidwifeVR posts</span>
+            <span class="value" id="midwifeVRPosts">0</span>
+        </div>
+        <div class="item">
+            <span class="title" onclick="increment('incomeSources')">Indtægtskilder</span>
+            <span class="value" id="incomeSources">0</span>
+        </div>
+        <div class="item">
+            <span class="title" onclick="toggleFocus()">Fokus<span id="focus-dot"></span></span>
             <span class="value" id="focus">0/120 min.</span>
         </div>
     </div>
