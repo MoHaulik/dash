@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <h1 id="dashboard-header">Personligt Dashboard</h1>
     <div id="dashboard">
         <div class="item">
             <span class="title" onclick="increment('meal')">Måltid</span>
@@ -47,6 +48,10 @@
         <div class="item">
             <span class="title" onclick="increment('incomeSources')">Indtægtskilder</span>
             <span class="value" id="incomeSources">0</span>
+        </div>
+        <div class="item">
+            <span class="title" onclick="increment('strikes')">Striks</span>
+            <span class="value" id="strikes">0</span>
         </div>
         <div class="item">
             <span class="title" onclick="toggleFocus()">Fokus<span id="focus-dot">.</span></span>
