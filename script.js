@@ -31,11 +31,10 @@ function saveProgress(id, value) {
 
 function increment(id) {
     const el = document.getElementById(id);
-    let current = parseInt(el.textContent.split('/')[0]);
-    current++;
-    const newValue = `${current}/${el.textContent.split('/')[1]}`;
-    el.textContent = newValue;
-    saveProgress(id, newValue);
+    let current = parseInt(el.textContent) || 0;
+    current += 250;
+    el.textContent = current + ' kr.';
+    saveProgress(id, el.textContent);
 }
 
 function incrementWater() {
@@ -66,12 +65,7 @@ function incrementMinutes(id, incrementBy, maxMinutes) {
 }
 
 function setOfferSent() {
-    const newOffer = prompt("Indtast tilbudsbeløb (kr):", "0");
-    if (newOffer !== null) {
-        const newValue = `${newOffer} kr.`;
-        document.getElementById('offerSent').textContent = newValue;
-        saveProgress('offerSent', newValue);
-    }
+    increment('offerSent');
 }
 
 let focusInterval;
