@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Personligt Dashboard</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -29,11 +29,11 @@
             <span class="value" id="talkedTo">0</span>
         </div>
         <div class="item">
-            <span class="title" onclick="increment('messagesSent')">Beskeder sent</span>
+            <span class="title" onclick="increment('messagesSent')">Beskeder sendt</span>
             <span class="value" id="messagesSent">0</span>
         </div>
         <div class="item">
-            <span class="title" onclick="setOfferSent()">Tilbud sent for</span>
+            <span class="title" onclick="setOfferSent()">Tilbud sendt for</span>
             <span class="value" id="offerSent">0 kr.</span>
         </div>
         <div class="item">
@@ -49,11 +49,10 @@
             <span class="value" id="incomeSources">0</span>
         </div>
         <div class="item">
-            <span class="title" onclick="toggleFocus()">Fokus<span id="focus-dot"></span></span>
+            <span class="title" onclick="toggleFocus()">Fokus<span id="focus-dot">.</span></span>
             <span class="value" id="focus">0/120 min.</span>
         </div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
