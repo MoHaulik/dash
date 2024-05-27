@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="dashboard">
+        <div class="item">
+            <span class="title" onclick="increment('meal')">Måltid</span>
+            <span class="value" id="meal">0/3</span>
+        </div>
+        <div class="item">
+            <span class="title" onclick="incrementWater()">Vand</span>
+            <span class="value" id="water">0% (i alt 0.0 liter)</span>
+        </div>
+        <div class="item">
+            <span class="title" onclick="increment('training')">Træning</span>
+            <span class="value" id="training">0/1</span>
+        </div>
+        <!-- Flere emner her -->
+        <div class="item">
+            <span class="title" onclick="toggleFocus()">Fokus</span>
+            <span class="value" id="focus">0/120 min.</span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
