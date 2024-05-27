@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     loadProgress();
 
+    // Check every minute if a new day has started
     setInterval(() => {
         const now = new Date();
         if (now.getHours() === 0 && now.getMinutes() === 0) {
