@@ -33,7 +33,7 @@
             <span class="value" id="messagesSent">0</span>
         </div>
         <div class="item">
-            <span class="title" onclick="increment('offerSent')">Tilbud sendt for</span>
+            <span class="title" onclick="incrementOfferSent()">Tilbud sendt for</span>
             <span class="value" id="offerSent">0 kr.</span>
         </div>
         <div class="item">
@@ -57,6 +57,7 @@
             <span class="value" id="focus">0/120 min.</span>
         </div>
     </div>
+    <button onclick="resetAll()">Reset All</button>
     <script src="script.js"></script>
 </body>
 </html>
