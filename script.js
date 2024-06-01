@@ -69,7 +69,7 @@ function incrementMinutes(id, incrementBy, maxMinutes) {
     }
 }
 
-function setOfferSent() {
+function incrementOfferSent() {
     const el = document.getElementById('offerSent');
     let current = parseInt(el.textContent.split(' ')[0]) || 0;
     current += 250;
@@ -118,6 +118,27 @@ function toggleFocus() {
 }
 
 function createNewDay() {
+    document.querySelectorAll('.item .value').forEach(el => {
+        const id = el.id;
+        if (id === 'water') {
+            el.textContent = '0% (i alt 0.0 liter)';
+        } else if (id === 'focus') {
+            el.textContent = '0/120 min.';
+        } else if (id === 'mindfulness') {
+            el.textContent = '0/45 min';
+        } else if (id === 'offerSent') {
+            el.textContent = '0 kr.';
+        } else {
+            el.textContent = '0';
+        }
+        saveProgress(id, el.textContent);
+    });
+    focusTime = 0;
+    localStorage.setItem('focusTime', '0');
+    localStorage.setItem('focusStatus', 'stopped');
+}
+
+function resetAll() {
     document.querySelectorAll('.item .value').forEach(el => {
         const id = el.id;
         if (id === 'water') {
