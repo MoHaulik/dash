@@ -33,7 +33,7 @@
             <span class="value" id="messagesSent">0</span>
         </div>
         <div class="item">
-            <span class="title" onclick="setOfferSent()">Tilbud sendt for</span>
+            <span class="title" onclick="increment('offerSent')">Tilbud sendt for</span>
             <span class="value" id="offerSent">0 kr.</span>
         </div>
         <div class="item">
@@ -47,6 +47,10 @@
         <div class="item">
             <span class="title" onclick="increment('incomeSources')">Indtægtskilder</span>
             <span class="value" id="incomeSources">0</span>
+        </div>
+        <div class="item">
+            <span class="title" onclick="increment('streak')">Striks</span>
+            <span class="value" id="streak">0</span>
         </div>
         <div class="item">
             <span class="title" onclick="toggleFocus()">Fokus<span id="focus-dot">.</span></span>
