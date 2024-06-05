@@ -3,8 +3,9 @@ body {
     color: white;
     font-family: Arial, sans-serif;
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
     height: 100vh;
     margin: 0;
     padding-top: 35px; /* Add padding to move the text higher */
@@ -18,6 +19,7 @@ body {
     display: flex;
     justify-content: space-between;
     margin: 10px 0;
+    font-size: 2em; /* Double the text size */
 }
 
 .title {
@@ -36,4 +38,12 @@ body {
     to {
         visibility: hidden;
     }
+}
+
+.reset-button {
+    margin-top: auto; /* Push the button to the bottom */
+    margin-bottom: 20px; /* Add some space at the bottom */
+    padding: 10px 20px;
+    font-size: 2em; /* Match the text size */
+    cursor: pointer;
 }
