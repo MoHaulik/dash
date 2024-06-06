@@ -19,7 +19,7 @@ body {
     display: flex;
     justify-content: space-between;
     margin: 10px 0;
-    font-size: 2em; /* Double the text size */
+    font-size: 1.8em; /* Slightly smaller text size */
 }
 
 .title {
@@ -40,10 +40,11 @@ body {
     }
 }
 
-.reset-button {
-    margin-top: auto; /* Push the button to the bottom */
-    margin-bottom: 20px; /* Add some space at the bottom */
+.reset {
+    margin-top: 20px; /* Add some space at the bottom */
     padding: 10px 20px;
-    font-size: 2em; /* Match the text size */
+    font-size: 1.8em; /* Match the text size */
     cursor: pointer;
+    color: white;
+    text-decoration: underline;
 }
