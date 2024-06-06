@@ -29,6 +29,16 @@ function saveProgress(id, value) {
     localStorage.setItem(id, value);
 }
 
+function playSound(id) {
+    const clickSound = document.getElementById('click-sound');
+    const goalSound = document.getElementById('goal-sound');
+    if (id === 'streak') {
+        goalSound.play();
+    } else {
+        clickSound.play();
+    }
+}
+
 function increment(id) {
     const el = document.getElementById(id);
     let current = parseInt(el.textContent.split(' ')[0]) || 0;
@@ -36,6 +46,7 @@ function increment(id) {
     const newValue = `${current}`;
     el.textContent = newValue;
     saveProgress(id, newValue);
+    playSound(id);
 }
 
 function incrementWater() {
@@ -48,6 +59,7 @@ function incrementWater() {
         const newValue = `${percent}% (i alt ${liters.toFixed(1)} liter)`;
         el.textContent = newValue;
         saveProgress('water', newValue);
+        playSound('water');
     }
 }
 
@@ -63,6 +75,7 @@ function incrementMinutes(id, incrementBy, maxMinutes) {
             const newValue = `${current}/${total} min`;
             el.textContent = newValue;
             saveProgress(id, newValue);
+            playSound(id);
         }
     } else {
         el.textContent = `0/${maxMinutes} min`;
@@ -76,6 +89,7 @@ function incrementOfferSent() {
     const newValue = `${current} kr.`;
     el.textContent = newValue;
     saveProgress('offerSent', newValue);
+    playSound('offerSent');
 }
 
 let focusInterval;
@@ -114,6 +128,7 @@ function toggleFocus() {
         stopFocusTimer();
     } else {
         startFocusTimer();
+        playSound('focus');
     }
 }
 
@@ -157,4 +172,5 @@ function resetAll() {
     focusTime = 0;
     localStorage.setItem('focusTime', '0');
     localStorage.setItem('focusStatus', 'stopped');
+    alert("All values have been reset!");
 }
