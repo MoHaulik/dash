@@ -1,176 +1,198 @@
-document.addEventListener('DOMContentLoaded', () => {
-    loadProgress();
+let meal = 0;
+let waterIntake = 0.0;
+let training = 0;
+let mindfulness = 0;
+let breathing = 0;
+let posts = 0;
+let messages = 0;
+let streak = 0;
+let focus = 0;
+let focusActive = false;
 
-    // Check every minute if a new day has started
-    setInterval(() => {
-        const now = new Date();
-        if (now.getHours() === 0 && now.getMinutes() === 0) {
-            createNewDay();
-        }
-    }, 60000);
-});
+let currentDate = new Date(2024, 7, 30); // Start from 30 August 2024
+const endDate = new Date(2024, 8, 30); // End at 30 September 2024
+const dataStorage = {};
 
-function loadProgress() {
-    document.querySelectorAll('.item .value').forEach(el => {
-        const id = el.id;
-        const value = localStorage.getItem(id);
-        if (value !== null && value !== undefined) {
-            el.textContent = value;
-        }
-    });
+function formatDate(date) {
+    const options = { day: 'numeric', month: 'long', year: 'numeric' };
+    return date.toLocaleDateString('da-DK', options);
+}
 
-    const focusStatus = localStorage.getItem('focusStatus');
-    if (focusStatus === 'running') {
-        startFocusTimer();
+function updateDateDisplay() {
+    document.getElementById('current-date').textContent = formatDate(currentDate);
+}
+
+function saveCurrentData() {
+    dataStorage[formatDate(currentDate)] = {
+        meal,
+        waterIntake,
+        training,
+        mindfulness,
+        breathing,
+        posts,
+        messages,
+        streak,
+        focus
+    };
+}
+
+function loadDateData(date) {
+    const formattedDate = formatDate(date);
+    if (dataStorage[formattedDate]) {
+        const data = dataStorage[formattedDate];
+        meal = data.meal;
+        waterIntake = data.waterIntake;
+        training = data.training;
+        mindfulness = data.mindfulness;
+        breathing = data.breathing;
+        posts = data.posts;
+        messages = data.messages;
+        streak = data.streak;
+        focus = data.focus;
+    } else {
+        resetAll(); // Reset to default if no data exists for the date
+    }
+    updateDashboard();
+}
+
+function updateDashboard() {
+    document.getElementById('meal').textContent = `${meal}/3`;
+    document.getElementById('water').textContent = `${Math.round((waterIntake / 2.6) * 100)}% (i alt ${waterIntake.toFixed(1)} liter)`;
+    document.getElementById('training').textContent = `${training}/1`;
+    document.getElementById('mindfulness').textContent = `${mindfulness}/25 min`;
+    document.getElementById('breathing').textContent = `${breathing}/3`;
+    document.getElementById('posts').textContent = posts;
+    document.getElementById('messages').textContent = messages;
+    document.getElementById('streak').textContent = streak;
+    document.getElementById('focus').textContent = `${focus}/60 min.`;
+    document.getElementById('water-progress').textContent = `${Math.round((waterIntake / 2.6) * 100)}%`;
+
+    const progressCircle = document.querySelector('.progress-circle');
+    progressCircle.style.setProperty('--progress-percentage', `${Math.round((waterIntake / 2.6) * 100)}%`);
+}
+
+function previousDate() {
+    saveCurrentData();
+    if (currentDate > new Date(2024, 7, 30)) {
+        currentDate.setDate(currentDate.getDate() - 1);
+        loadDateData(currentDate);
+        updateDateDisplay();
     }
 }
 
-function saveProgress(id, value) {
-    localStorage.setItem(id, value);
-}
-
-function playSound(id) {
-    const clickSound = document.getElementById('click-sound');
-    const goalSound = document.getElementById('goal-sound');
-    if (id === 'streak') {
-        goalSound.play();
-    } else {
-        clickSound.play();
+function nextDate() {
+    saveCurrentData();
+    if (currentDate < endDate) {
+        currentDate.setDate(currentDate.getDate() + 1);
+        loadDateData(currentDate);
+        updateDateDisplay();
     }
 }
 
 function increment(id) {
-    const el = document.getElementById(id);
-    let current = parseInt(el.textContent.split(' ')[0]) || 0;
-    current++;
-    const newValue = `${current}`;
-    el.textContent = newValue;
-    saveProgress(id, newValue);
-    playSound(id);
+    const element = document.getElementById(id);
+    switch(id) {
+        case 'meal':
+            meal = Math.min(meal + 1, 3);
+            element.textContent = `${meal}/3`;
+            break;
+        case 'training':
+            training = Math.min(training + 1, 1);
+            element.textContent = `${training}/1`;
+            break;
+        case 'mindfulness':
+            mindfulness = Math.min(mindfulness + 2, 25);
+            element.textContent = `${mindfulness}/25 min`;
+            break;
+        case 'breathing':
+            breathing = Math.min(breathing + 1, 3);
+            element.textContent = `${breathing}/3`;
+            break;
+        case 'posts':
+            posts++;
+            element.textContent = posts;
+            break;
+        case 'messages':
+            messages++;
+            element.textContent = messages;
+            break;
+        case 'streak':
+            streak++;
+            element.textContent = streak;
+            break;
+        default:
+            break;
+    }
+    element.classList.add('update');
+    setTimeout(() => element.classList.remove('update'), 500);
 }
 
 function incrementWater() {
-    const el = document.getElementById('water');
-    let details = el.textContent.split(' ');
-    let liters = parseFloat(details[3]) || 0.0;
-    if (liters < 3.8) {
-        liters += 0.25;
-        const percent = Math.round((liters / 3.8) * 100);
-        const newValue = `${percent}% (i alt ${liters.toFixed(1)} liter)`;
-        el.textContent = newValue;
-        saveProgress('water', newValue);
-        playSound('water');
+    waterIntake += 0.25;
+    const maxWater = 2.6;
+    const percentage = Math.min((waterIntake / maxWater) * 100, 100);
+    document.getElementById('water').textContent = `${percentage.toFixed(0)}% (i alt ${waterIntake.toFixed(1)} liter)`;
+
+    // Update the progress bar
+    const progressCircle = document.querySelector('.progress-circle');
+    progressCircle.style.setProperty('--progress-percentage', `${percentage}%`);
+    document.getElementById('water-progress').textContent = `${percentage.toFixed(0)}%`;
+}
+
+function incrementMinutes(id, increment, max) {
+    const element = document.getElementById(id);
+    switch(id) {
+        case 'mindfulness':
+            mindfulness = Math.min(mindfulness + increment, max);
+            element.textContent = `${mindfulness}/${max} min`;
+            break;
+        default:
+            break;
     }
-}
-
-function incrementMinutes(id, incrementBy, maxMinutes) {
-    const el = document.getElementById(id);
-    let [current, total] = el.textContent.split('/').map(s => s.split(' ')[0]).map(Number);
-    if (!isNaN(current) && !isNaN(total)) {
-        if (current < total) {
-            current += incrementBy;
-            if (current > maxMinutes) {
-                current = maxMinutes;
-            }
-            const newValue = `${current}/${total} min`;
-            el.textContent = newValue;
-            saveProgress(id, newValue);
-            playSound(id);
-        }
-    } else {
-        el.textContent = `0/${maxMinutes} min`;
-    }
-}
-
-function incrementOfferSent() {
-    const el = document.getElementById('offerSent');
-    let current = parseInt(el.textContent.split(' ')[0]) || 0;
-    current += 250;
-    const newValue = `${current} kr.`;
-    el.textContent = newValue;
-    saveProgress('offerSent', newValue);
-    playSound('offerSent');
-}
-
-let focusInterval;
-let focusTime = 0;
-
-function startFocusTimer() {
-    const el = document.getElementById('focus');
-    const dot = document.getElementById('focus-dot');
-
-    focusTime = parseInt(localStorage.getItem('focusTime')) || 0;
-    dot.classList.add('blink');
-    focusInterval = setInterval(() => {
-        focusTime++;
-        if (focusTime <= 120) {
-            const newValue = `${focusTime}/120 min.`;
-            el.textContent = newValue;
-            saveProgress('focus', newValue);
-            saveProgress('focusTime', focusTime);
-        } else {
-            clearInterval(focusInterval);
-        }
-    }, 60000);
-
-    localStorage.setItem('focusStatus', 'running');
-}
-
-function stopFocusTimer() {
-    clearInterval(focusInterval);
-    document.getElementById('focus-dot').classList.remove('blink');
-    localStorage.setItem('focusStatus', 'stopped');
+    element.classList.add('update');
+    setTimeout(() => element.classList.remove('update'), 500);
 }
 
 function toggleFocus() {
-    const dot = document.getElementById('focus-dot');
-    if (dot.classList.contains('blink')) {
-        stopFocusTimer();
+    focusActive = !focusActive;
+    if (focusActive) {
+        focusInterval = setInterval(() => {
+            focus = Math.min(focus + 1, 60);
+            document.getElementById('focus').textContent = `${focus}/60 min.`;
+            if (focus === 60) {
+                clearInterval(focusInterval);
+                focusActive = false;
+            }
+        }, 60000);
     } else {
-        startFocusTimer();
-        playSound('focus');
+        clearInterval(focusInterval);
     }
-}
-
-function createNewDay() {
-    document.querySelectorAll('.item .value').forEach(el => {
-        const id = el.id;
-        if (id === 'water') {
-            el.textContent = '0% (i alt 0.0 liter)';
-        } else if (id === 'focus') {
-            el.textContent = '0/120 min.';
-        } else if (id === 'mindfulness') {
-            el.textContent = '0/45 min';
-        } else if (id === 'offerSent') {
-            el.textContent = '0 kr.';
-        } else {
-            el.textContent = '0';
-        }
-        saveProgress(id, el.textContent);
-    });
-    focusTime = 0;
-    localStorage.setItem('focusTime', '0');
-    localStorage.setItem('focusStatus', 'stopped');
+    document.getElementById('focus-dot').classList.toggle('blink', focusActive);
 }
 
 function resetAll() {
-    document.querySelectorAll('.item .value').forEach(el => {
-        const id = el.id;
-        if (id === 'water') {
-            el.textContent = '0% (i alt 0.0 liter)';
-        } else if (id === 'focus') {
-            el.textContent = '0/120 min.';
-        } else if (id === 'mindfulness') {
-            el.textContent = '0/45 min';
-        } else if (id === 'offerSent') {
-            el.textContent = '0 kr.';
-        } else {
-            el.textContent = '0';
-        }
-        saveProgress(id, el.textContent);
-    });
-    focusTime = 0;
-    localStorage.setItem('focusTime', '0');
-    localStorage.setItem('focusStatus', 'stopped');
-    alert("All values have been reset!");
+    meal = 0;
+    waterIntake = 0.0;
+    training = 0;
+    mindfulness = 0;
+    breathing = 0;
+    posts = 0;
+    messages = 0;
+    streak = 0;
+    focus = 0;
+    focusActive = false;
+    document.getElementById('meal').textContent = '0/3';
+    document.getElementById('water').textContent = '0% (i alt 0.0 liter)';
+    document.getElementById('training').textContent = '0/1';
+    document.getElementById('mindfulness').textContent = '0/25 min';
+    document.getElementById('breathing').textContent = '0/3';
+    document.getElementById('posts').textContent = '0';
+    document.getElementById('messages').textContent = '0';
+    document.getElementById('streak').textContent = '0';
+    document.getElementById('focus').textContent = '0/60 min.';
+    document.getElementById('focus-dot').classList.remove('blink');
 }
+
+// Initialize
+updateDateDisplay();
+loadDateData(currentDate);
